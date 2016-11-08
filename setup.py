@@ -3,7 +3,8 @@ from setuptools import setup
 requires = [
     'pyramid',
     'pyramid_chameleon',
-    'deform'
+    'deform',
+    'googlemaps'
 ]
 
 setup(name='placebook',

@@ -9,5 +9,8 @@
 	<a href="${request.route_url('homepage')}">Go Home</a>
 <!-- You're going to need to do some kind of tal repeat here, see chameleon -->
 	<p>Address: ${address}</p>
+	<p>Distance: ${distance}</p>
+	<p>Latitude: ${latitude}</p>
+	<p>Longitude: ${longitude}</p>
 </body>
 </html>

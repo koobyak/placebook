@@ -4,6 +4,7 @@ import deform.widget
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
+from google_maps_geocoding import GoogleMapsGeocoding
 
 class SearchQuery(colander.MappingSchema):
     """
@@ -12,8 +13,24 @@ class SearchQuery(colander.MappingSchema):
     address = colander.SchemaNode(
         colander.String(),
         title = 'Address',
-        description = 'Enter an exact address or a city name.')
-    # distance (should be a drop down bar of some options e.g. 50, 100, 200 km) maybe a widget for that?
+        description = 'Enter an exact address or a city name.'
+    )
+
+    distance_values = [
+        # (value_passed, display_name)
+        (25, '25'),
+        (50, '50'),
+        (100, '100')
+    ]
+    distance = colander.SchemaNode(
+        colander.Int(),
+        # TODO: which range is best?
+        validator = colander.Range(0, 9999),
+        title = 'Distance',
+        description = 'Select a max distance from your address.',
+        widget = deform.widget.SelectWidget(values = distance_values)
+    )
+        # TODO: in kilometers or miles?
 
 
 class PlacebookViews(object):
@@ -44,9 +61,16 @@ class PlacebookViews(object):
 
             # Form is valid, get our values and build query string
             address = validated['address']
+            distance = validated['distance']
 
             # redirect to map with parameters in query string ('GET')
-            url = self.request.route_url('map', _query=(('address', address),))
+            url = self.request.route_url(
+                'map',
+                _query=(
+                    ('address', address),
+                    ('distance', distance)
+                )
+            )
             return HTTPFound(location = url)
 
         return dict(form=form)
@@ -54,4 +78,13 @@ class PlacebookViews(object):
     @view_config(route_name='map', renderer='static/map.pt')
     def map_view(self):
         address = self.request.params['address']
-        return dict(address=address)
+        distance = self.request.params['distance']
+        gmaps = GoogleMapsGeocoding(address)
+        coords = gmaps.get_coordinates()
+        latitude = coords['lat']
+        longitude = coords['lng']
+        return dict(address = address, 
+            distance = distance,
+            latitude = latitude,
+            longitude = longitude,
+        )
