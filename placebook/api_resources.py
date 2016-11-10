@@ -76,7 +76,8 @@ def create_geojson_feature(result):
         popupContent = result['name'],
         likes = result['fan_count'],
         checkins = result['checkins'],
-        picture = result['picture']
+        picture = result['picture'],
+        category = result['category']
     )
     # add everything above to feature
     feature = dict(
