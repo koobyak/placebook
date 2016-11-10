@@ -18,10 +18,11 @@ class SearchQuery(colander.MappingSchema):
 
     distance_values = [
         # (value in meters, display_name)
-        (3000, '3'),
-        (5000, '5'),
-        (10000, '10'),
-        (25000, '25')
+        (1000, '1 km'),
+        (2000, '2 km'),
+        (3000, '3 km'),
+        (5000, '5 km'),
+        (10000, '10 km')
     ]
     distance = colander.SchemaNode(
         colander.Int(),

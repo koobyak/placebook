@@ -2,7 +2,7 @@
 import config
 import facebook
 import googlemaps
-import json
+import json, requests
 
 class GoogleMapsGeocoding(object):
     """
@@ -35,16 +35,18 @@ class FacebookPlaces(object):
         # we will pass lat and long into query as strings
         coordinates = '%s, %s' % (str(self.coordinates['lat']), str(self.coordinates['lng']))
         # the metadata of the page we're interested in
-        fields = 'id, location, name, checkins, fan_count, category'
+        fields = 'id, location, name, checkins, fan_count, category, picture'
         all_results = graph.get_object(
         	'search',
             q = '',
             type = 'place', 
             center = coordinates,
             distance = str(self.distance),
-            fields = fields
+            fields = fields,
+            # READ: Facebook Search API seems to cap out results around ~800 .. however it's not consistent
+            # and no proper documentation found to confirm this. Capping at hard-coded 1000 search results.
+            limit = 1000
         )
-        # returning first page of results as dict, leaving option to use FB's 'paging' to return more results if they exist
         results = all_results['data']
         geojson = facebook_places_results_to_geojson(results)
         return geojson
@@ -71,7 +73,10 @@ def create_geojson_feature(result):
     properties = dict(
     	name = result['name'],
     	fbid = result['id'],
-        popupContent = result['name']
+        popupContent = result['name'],
+        likes = result['fan_count'],
+        checkins = result['checkins'],
+        picture = result['picture']
     )
     # add everything above to feature
     feature = dict(
