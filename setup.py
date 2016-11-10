@@ -4,7 +4,8 @@ requires = [
     'pyramid',
     'pyramid_chameleon',
     'deform',
-    'googlemaps'
+    'googlemaps',
+    'facebook-sdk'
 ]
 
 setup(name='placebook',

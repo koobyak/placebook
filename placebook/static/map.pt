@@ -1,16 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Map</title>
+    <title>Placebook</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+
+	<style>
+		#map {
+			width: 700px;
+			height: 500px;
+		}
+	</style>
 </head>
 <body>
-	<h1>Map</h1>
+	<h1>Placebook</h1>
 
-	<a href="${request.route_url('homepage')}">Go Home</a>
-<!-- You're going to need to do some kind of tal repeat here, see chameleon -->
+	<a href="${request.route_url('homepage')}">Search Again.</a>
+	<br><br>
+	<div id='map'></div>
+	<script>
+		var geoData = ${structure:geojson};
+		var latitude = ${latitude};
+		var longitude = ${longitude};
+		var map = L.map('map').setView(
+			[latitude, longitude], 
+			14);
+
+		L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia3ViaWFrIiwiYSI6ImNpdmNmMjgwbTAxN3oyeXFpcTh1dXhrajEifQ.3L9cNHo5sZ8hMKEdc7QCoA', {
+			maxZoom: 20,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			//id: 'mapbox.dark'
+		}).addTo(map);
+
+		function onEachFeature(feature, layer) {
+			var popupContent = 
+				'<p>' +
+				feature.properties.name + 
+				'</p>' + 
+				'<p><a href="https://www.facebook.com/' +
+				feature.properties.fbid + 
+				'">Open on Facebook.</a></p>';
+			layer.bindPopup(popupContent);
+		};
+
+		L.geoJSON(geoData, {
+			style: function (feature) {
+				return feature.properties && feature.properties.style;
+			},
+			onEachFeature: onEachFeature,
+			pointToLayer: function (feature, latlng) {
+				return L.circleMarker(latlng, {
+					radius: 5,
+					fillColor: "#00FFFF",
+					color: "#000",
+					weight: 1,
+					opacity: 1,
+					fillOpacity: 0.8
+				});
+			}
+		}).addTo(map);
+	</script>
+
+<!-- You're going to need to do some kind of tal repeat here, see chameleon
 	<p>Address: ${address}</p>
 	<p>Distance: ${distance}</p>
 	<p>Latitude: ${latitude}</p>
 	<p>Longitude: ${longitude}</p>
+-->
 </body>
 </html>
