@@ -15,6 +15,8 @@ What I used:
  * [Facebook Python SDK](https://github.com/mobolic/facebook-sdk) for the obvious stuff
 
 ### Now, to get this thing to work:
+
+
 Do the following.
 1. Create a config.py file for reading your API keys. The common practice is to embed them as environment variables in your local system. Maybe something like: 
 ```python
@@ -33,4 +35,4 @@ which will install Pyramid and all our other dependencies from setup.py.
 $ path/to/env/bin/pserve development.ini --reload
 ```
 
-Try typing in "Paris" or "Nice, France" or an exact address. Then select a distance and see what you get.# placebook
+Try typing in "Paris" or "Nice, France" or an exact address. Then select a distance and see what you get.
