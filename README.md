@@ -32,7 +32,6 @@ googlemaps_api = {
 $ path/to/env/bin/pip install -e .
 ```
 which will install Pyramid and all our other dependencies from setup.py.
-
 3. After the egg is created, you should be able to 
 ```sh
 $ path/to/env/bin/pserve development.ini --reload
