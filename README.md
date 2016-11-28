@@ -21,20 +21,21 @@ This app was built to work with Python 2.7.
 Do the following.
 
 1. Create a config.py file for reading your API keys. The common practice is to embed them as environment variables in your local system. Maybe something like: 
-```python
-GOOGLEMAPS_API_KEY = os.environ['GOOGLEMAPS_API_KEY']
-googlemaps_api = {
-    'api_key' : GOOGLEMAPS_API_KEY
-}
-```
+    ```python
+    GOOGLEMAPS_API_KEY = os.environ['GOOGLEMAPS_API_KEY']
+    googlemaps_api = {
+        'api_key' : GOOGLEMAPS_API_KEY
+    }
+    ```
 2. Create a virtual env and
-```sh
-$ path/to/env/bin/pip install -e .
-```
-which will install Pyramid and all our other dependencies from setup.py.
+    ```sh
+    $ path/to/env/bin/pip install -e .
+    ```
+    which will install Pyramid and all our other dependencies from setup.py.
+
 3. After the egg is created, you should be able to 
-```sh
-$ path/to/env/bin/pserve development.ini --reload
-```
+    ```sh
+    $ path/to/env/bin/pserve development.ini --reload
+    ```
 
 Try typing in "Paris" or "Nice, France" or an exact address. Then select a distance and see what you get.
