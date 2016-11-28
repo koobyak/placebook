@@ -47,7 +47,7 @@ class PlacebookViews(object):
     def reqts(self):
         return self.placebook_form.get_widget_resources()
 
-    @view_config(route_name='homepage', renderer='static/homepage.pt')
+    @view_config(route_name='homepage', renderer='templates/homepage.pt')
     def homepage(self):
         form = self.placebook_form.render()
         # check if form was submitted with POST action
@@ -75,7 +75,7 @@ class PlacebookViews(object):
 
         return dict(form=form)
 
-    @view_config(route_name='map', renderer='static/map.pt')
+    @view_config(route_name='map', renderer='templates/map.pt')
     def map_view(self):
         address = self.request.params['address']
         distance = self.request.params['distance']
